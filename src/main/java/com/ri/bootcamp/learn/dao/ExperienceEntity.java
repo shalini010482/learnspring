@@ -1,0 +1,75 @@
+package com.ri.bootcamp.learn.dao;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.ri.bootcamp.learn.domain.Experience;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "experience_details")
+@NoArgsConstructor
+@AllArgsConstructor
+@DynamicUpdate
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class ExperienceEntity extends BaseEntity {
+
+	 @ManyToOne
+	 @JoinColumn(name = "resource_details_id", referencedColumnName = "id")
+	 private ResourceDetailsEntity resourceDetailsEntity;
+	
+//	@Size(max = 255)
+//    @Column(name = "resource_details_id")
+//    private String resourceDetailsId;
+	
+	@Size(max = 50)
+	@Column(name = "org_name")
+	private String orgName;
+
+	@Size(max = 1024)
+	@Column(name = "org_address")
+	private String orgAddress;		
+
+	public ExperienceEntity(Experience experience) {
+		super();
+		this.id = experience.getId();
+		this.active = experience.getActive();
+		this.orgName = experience.getOrgName();
+		this.orgAddress = experience.getOrgAddress();
+		//this.resourceDetailsId = experience.getResourceDetailsId();
+		if (this.getResourceDetailsEntity() != null) {
+			ResourceDetailsEntity ResDtlsEnty = new ResourceDetailsEntity();
+			ResDtlsEnty.setId(experience.getResourceDetailsId());
+	    this.setResourceDetailsEntity(ResDtlsEnty);}
+	}
+
+	public Experience getExperienceDomain() {
+
+		Experience experience = new Experience(
+				this.getId() == null ? "-" : this.getId(), this.getActive(),
+				this.getOrgName() == null ? "-" : this.getOrgName(),
+				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),null
+						
+						
+					
+				//this.getResourceDetailsId() == null ? "-" : this.getResourceDetailsId()		
+				);
+
+		return experience;
+	}
+}
