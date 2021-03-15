@@ -1,4 +1,4 @@
-package com.ri.bootcamp.learn.controller;
+package com.ri.bootcamp.learn.metaskill;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.ri.bootcamp.learn.domain.MetaSkill;
-import com.ri.bootcamp.learn.service.MetaSkillService;
 
 @RestController
 @RequestMapping(value = "/rms/skilldetails")

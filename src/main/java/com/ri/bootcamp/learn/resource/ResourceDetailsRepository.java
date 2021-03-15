@@ -1,4 +1,4 @@
-package com.ri.bootcamp.learn.repository;
+package com.ri.bootcamp.learn.resource;
 
 import java.util.List;
 

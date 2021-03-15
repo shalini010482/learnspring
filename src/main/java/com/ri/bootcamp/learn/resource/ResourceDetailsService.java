@@ -1,4 +1,4 @@
-package com.ri.bootcamp.learn.service;
+package com.ri.bootcamp.learn.resource;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ri.bootcamp.learn.dao.ResourceDetailsEntity;
 import com.ri.bootcamp.learn.domain.ResourceDetails;
+import com.ri.bootcamp.learn.metaskill.MetaSkillService;
 import com.ri.bootcamp.learn.domain.MetaSkill;
-import com.ri.bootcamp.learn.repository.ResourceDetailsRepository;
 
 @Service
 public class ResourceDetailsService {

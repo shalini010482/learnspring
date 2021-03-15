@@ -1,5 +1,6 @@
 package com.ri.bootcamp.learn.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -27,7 +28,8 @@ public class ResourceDetails extends BaseDomain {
 	private String postApplierFor;
 
 	private Set<MetaSkill> skillSet;
-
+	private Set<Experience> experienceSet = new HashSet<>();
+	
 	public String getSkillIdList() {
 		StringBuilder skillIds = new StringBuilder();
 		for (MetaSkill s : skillSet) {

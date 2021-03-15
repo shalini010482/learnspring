@@ -2,6 +2,7 @@ package com.ri.bootcamp.learn.dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.ri.bootcamp.learn.domain.Experience;
+import com.ri.bootcamp.learn.utility.StringConstantsUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -29,13 +31,9 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class ExperienceEntity extends BaseEntity {
 
-	 @ManyToOne
-	 @JoinColumn(name = "resource_details_id", referencedColumnName = "id")
-	 private ResourceDetailsEntity resourceDetailsEntity;
-	
-//	@Size(max = 255)
-//    @Column(name = "resource_details_id")
-//    private String resourceDetailsId;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource", referencedColumnName = "id")
+    private ResourceDetailsEntity resourceDetailsEntity;
 	
 	@Size(max = 50)
 	@Column(name = "org_name")
@@ -52,10 +50,17 @@ public class ExperienceEntity extends BaseEntity {
 		this.orgName = experience.getOrgName();
 		this.orgAddress = experience.getOrgAddress();
 		//this.resourceDetailsId = experience.getResourceDetailsId();
-		if (this.getResourceDetailsEntity() != null) {
-			ResourceDetailsEntity ResDtlsEnty = new ResourceDetailsEntity();
-			ResDtlsEnty.setId(experience.getResourceDetailsId());
-	    this.setResourceDetailsEntity(ResDtlsEnty);}
+//		if (this.getResourceDetailsEntity() != null) {
+//			ResourceDetailsEntity ResDtlsEnty = new ResourceDetailsEntity();
+//			ResDtlsEnty.setId(experience.getResourceDetailsId());
+//	    this.setResourceDetailsEntity(ResDtlsEnty);}
+		
+		
+		if (experience.getResourceDetailsId()!= null) {
+			ResourceDetailsEntity resourceDetailsEntity = new ResourceDetailsEntity();
+			resourceDetailsEntity.setId(experience.getResourceDetailsId());
+            this.setResourceDetailsEntity(resourceDetailsEntity);
+        }
 	}
 
 	public Experience getExperienceDomain() {
@@ -63,12 +68,13 @@ public class ExperienceEntity extends BaseEntity {
 		Experience experience = new Experience(
 				this.getId() == null ? "-" : this.getId(), this.getActive(),
 				this.getOrgName() == null ? "-" : this.getOrgName(),
-				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),null
+				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),
 						
-						
+				this.getResourceDetailsEntity() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
+		                        : this.getResourceDetailsEntity().getName());		
 					
 				//this.getResourceDetailsId() == null ? "-" : this.getResourceDetailsId()		
-				);
+				
 
 		return experience;
 	}

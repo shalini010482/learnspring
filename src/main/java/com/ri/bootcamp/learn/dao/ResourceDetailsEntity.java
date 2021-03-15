@@ -1,10 +1,19 @@
 package com.ri.bootcamp.learn.dao;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.ri.bootcamp.learn.domain.Experience;
 import com.ri.bootcamp.learn.domain.ResourceDetails;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +36,6 @@ public class ResourceDetailsEntity extends BaseEntity {
 
 	public ResourceDetailsEntity(ResourceDetails resourceDetails) {
 		super();
-
 		this.active = resourceDetails.getActive();
 		this.name = resourceDetails.getName();
 		this.gender = resourceDetails.getGender();
@@ -76,15 +84,26 @@ public class ResourceDetailsEntity extends BaseEntity {
 	@Column(name = "skill_id_list")
 	private String skillIdList;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity")
+	@OrderBy("name ASC")
+	private Set<ExperienceEntity> experienceEntySet = new HashSet<>();
+
 	public ResourceDetails getResourceDetailsDomain() {
+		
+		Set<Experience> experienceSet = new HashSet<>();
+		Set<ExperienceEntity> experienceEntySet = this.getExperienceEntySet();
+		
+		for (ExperienceEntity experienceEntity : experienceEntySet) {
+			experienceSet.add(experienceEntity.getExperienceDomain());
+		}
+		
 		ResourceDetails resourceDetails = new ResourceDetails(this.getName() == null ? "-" : this.getName(),
 				this.getGender() == null ? "-" : this.getGender(), this.getCaste() == null ? "-" : this.getCaste(),
 				this.getReligion() == null ? "-" : this.getReligion(),
 				this.getMaritalStatus() == null ? "-" : this.getMaritalStatus(),
 				this.getQualification() == null ? "-" : this.getQualification(),
 				this.getMotherTongue() == null ? "-" : this.getMotherTongue(),
-				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null);
-
+				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null, experienceSet);
 		return resourceDetails;
 	}
 }

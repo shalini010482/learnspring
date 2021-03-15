@@ -1,4 +1,4 @@
-package com.ri.bootcamp.learn.repository;
+package com.ri.bootcamp.learn.metaskill;
 
 import com.ri.bootcamp.learn.dao.MetaSkillEntity;
 import org.springframework.data.domain.Pageable;
