@@ -31,17 +31,17 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class ExperienceEntity extends BaseEntity {
 
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resource", referencedColumnName = "id")
-    private ResourceDetailsEntity resourceDetailsEntity;
-	
 	@Size(max = 50)
 	@Column(name = "org_name")
 	private String orgName;
 
 	@Size(max = 1024)
 	@Column(name = "org_address")
-	private String orgAddress;		
+	private String orgAddress;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "resource", referencedColumnName = "id")
+	private ResourceDetailsEntity resourceDetailsEntity;
 
 	public ExperienceEntity(Experience experience) {
 		super();
@@ -49,32 +49,21 @@ public class ExperienceEntity extends BaseEntity {
 		this.active = experience.getActive();
 		this.orgName = experience.getOrgName();
 		this.orgAddress = experience.getOrgAddress();
-		//this.resourceDetailsId = experience.getResourceDetailsId();
-//		if (this.getResourceDetailsEntity() != null) {
-//			ResourceDetailsEntity ResDtlsEnty = new ResourceDetailsEntity();
-//			ResDtlsEnty.setId(experience.getResourceDetailsId());
-//	    this.setResourceDetailsEntity(ResDtlsEnty);}
-		
-		
-		if (experience.getResourceDetailsId()!= null) {
+
+		if (experience.getResourceDetailsId() != null) {
 			ResourceDetailsEntity resourceDetailsEntity = new ResourceDetailsEntity();
 			resourceDetailsEntity.setId(experience.getResourceDetailsId());
-            this.setResourceDetailsEntity(resourceDetailsEntity);
-        }
+			this.setResourceDetailsEntity(resourceDetailsEntity);
+		}
 	}
 
 	public Experience getExperienceDomain() {
 
-		Experience experience = new Experience(
-				this.getId() == null ? "-" : this.getId(), this.getActive(),
+		Experience experience = new Experience(this.getId() == null ? "-" : this.getId(), this.getActive(),
 				this.getOrgName() == null ? "-" : this.getOrgName(),
 				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),
-						
 				this.getResourceDetailsEntity() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
-		                        : this.getResourceDetailsEntity().getName());		
-					
-				//this.getResourceDetailsId() == null ? "-" : this.getResourceDetailsId()		
-				
+						: this.getResourceDetailsEntity().getName());
 
 		return experience;
 	}

@@ -1,6 +1,8 @@
 package com.ri.bootcamp.learn.dao;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -46,6 +48,15 @@ public class ResourceDetailsEntity extends BaseEntity {
 		this.motherTongue = resourceDetails.getMotherTongue();
 		this.postApplierFor = resourceDetails.getPostApplierFor();
 		this.skillIdList = resourceDetails.getSkillIdList();
+
+		Set<ExperienceEntity> expEntitySet = new HashSet<>();
+
+		if (resourceDetails.getExperienceSet() != null) {
+		for (Experience exp : resourceDetails.getExperienceSet()) {
+			expEntitySet.add(new ExperienceEntity(exp));
+			}
+		}
+		this.experienceEntySet = expEntitySet;
 	}
 
 	@Size(max = 150)
@@ -89,14 +100,14 @@ public class ResourceDetailsEntity extends BaseEntity {
 	private Set<ExperienceEntity> experienceEntySet = new HashSet<>();
 
 	public ResourceDetails getResourceDetailsDomain() {
-		
-		Set<Experience> experienceSet = new HashSet<>();
+
+		List<Experience> experienceSet = new ArrayList<>();
 		Set<ExperienceEntity> experienceEntySet = this.getExperienceEntySet();
-		
+
 		for (ExperienceEntity experienceEntity : experienceEntySet) {
 			experienceSet.add(experienceEntity.getExperienceDomain());
 		}
-		
+
 		ResourceDetails resourceDetails = new ResourceDetails(this.getName() == null ? "-" : this.getName(),
 				this.getGender() == null ? "-" : this.getGender(), this.getCaste() == null ? "-" : this.getCaste(),
 				this.getReligion() == null ? "-" : this.getReligion(),

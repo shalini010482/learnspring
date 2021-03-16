@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExperienceRepository extends CrudRepository<ExperienceEntity, String> {
-	//Page<MetaSkillEntity> findAll(Specification<MetaSkillEntity> specification, Pageable pageable);
-}
+	}

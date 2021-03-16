@@ -1,17 +1,16 @@
 package com.ri.bootcamp.learn.resource;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.ri.bootcamp.learn.dao.ResourceDetailsEntity;
+import com.ri.bootcamp.learn.domain.MetaSkill;
 import com.ri.bootcamp.learn.domain.ResourceDetails;
 import com.ri.bootcamp.learn.metaskill.MetaSkillService;
-import com.ri.bootcamp.learn.domain.MetaSkill;
 
 @Service
 public class ResourceDetailsService {
@@ -23,7 +22,7 @@ public class ResourceDetailsService {
 	MetaSkillService metaSkillService;
 
 	public ResourceDetails create(ResourceDetails resourceDetailsIn) {
-		ResourceDetailsEntity resourceDetailsEntityIn = new ResourceDetailsEntity(resourceDetailsIn);// domain--DAO
+		ResourceDetailsEntity resourceDetailsEntityIn = new ResourceDetailsEntity(resourceDetailsIn);// domain-->DAO
 		ResourceDetailsEntity resourceDetailsEntityOut = resourceDetailsRepository.save(resourceDetailsEntityIn);
 		ResourceDetails resourceDetailsOut = resourceDetailsEntityOut.getResourceDetailsDomain();
 		resourceDetailsOut.setSkillSet(getMetaSkillSet(resourceDetailsEntityOut.getSkillIdList()));
@@ -41,8 +40,8 @@ public class ResourceDetailsService {
 		return resourceDetailsOut;
 	}
 
-	private Set<MetaSkill> getMetaSkillSet(String id) {
-		Set<MetaSkill> skillSet = new HashSet<>();
+	private List<MetaSkill> getMetaSkillSet(String id) {
+		List<MetaSkill> skillSet = new ArrayList<>();
 		String[] ids = id.split(",");
 		for (String skillId : ids) {
 			skillSet.add(metaSkillService.getById(skillId));
