@@ -1,5 +1,7 @@
 package com.ri.bootcamp.learn;
 
+import javax.transaction.Transactional;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaRepositories("com.ri.bootcamp.*")
 @EntityScan("com.ri.bootcamp.*")
 @EnableSwagger2
+@Transactional
 @EnableAutoConfiguration
 public class LearnApplication {
 	public static void main(String[] args) {// first file

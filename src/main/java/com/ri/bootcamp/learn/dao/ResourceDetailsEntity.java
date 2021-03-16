@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -94,8 +95,8 @@ public class ResourceDetailsEntity extends BaseEntity {
 	@Size(max = 1024)
 	@Column(name = "skill_id_list")
 	private String skillIdList;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity")
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.MERGE)
 	@OrderBy("name ASC")
 	private Set<ExperienceEntity> experienceEntySet = new HashSet<>();
 
