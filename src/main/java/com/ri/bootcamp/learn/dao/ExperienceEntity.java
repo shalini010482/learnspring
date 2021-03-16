@@ -1,5 +1,6 @@
 package com.ri.bootcamp.learn.dao;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,8 +40,8 @@ public class ExperienceEntity extends BaseEntity {
 	@Column(name = "org_address")
 	private String orgAddress;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "resource", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "resource", unique = true, referencedColumnName = "id")
 	private ResourceDetailsEntity resourceDetailsEntity;
 
 	public ExperienceEntity(Experience experience) {
