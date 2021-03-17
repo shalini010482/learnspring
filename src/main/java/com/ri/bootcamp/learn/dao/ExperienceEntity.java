@@ -7,6 +7,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -41,13 +44,13 @@ public class ExperienceEntity extends BaseEntity {
 
 	@Size(max = 50)
 	@Column(name = "no_of_years")
-	private String noOfYears;
+	private float noOfYears;
 
 	@Column(name = "date_of_joining")
-	private String dateOfJoining;
+	private Date dateOfJoining;
 
 	@Column(name = "date_of_resigning")
-	private String dateOfResigning;
+	private Date dateOfResigning;
 
 	@Size(max = 1024)
 	@Column(name = "reason_for_resignation")
@@ -77,14 +80,14 @@ public class ExperienceEntity extends BaseEntity {
 
 	public Experience getExperienceDomain() {
 
-		Experience experience = new Experience(this.getId() == null ? "-" : this.getId(), this.getActive(),
-				this.getOrgName() == null ? "-" : this.getOrgName(),
-				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),
-				this.getNoOfYears() == null ? "-" : this.getNoOfYears(),
-
-				this.getDateOfJoining() == null ? "-" : this.getDateOfJoining(),
-				this.getDateOfResigning() == null ? "-" : this.getDateOfResigning(),
-				this.getReasonForResignation() == null ? "-" : this.getReasonForResignation(),
+		Experience experience = new Experience(
+				this.getId() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getId(), this.getActive(),
+				this.getOrgName() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getOrgName(),
+				this.getOrgAddress() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getOrgAddress(),
+				this.getNoOfYears(), this.getDateOfJoining() == null ? null : this.getDateOfJoining(),
+				this.getDateOfResigning() == null ? null : this.getDateOfResigning(),
+				this.getReasonForResignation() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
+						: this.getReasonForResignation(),
 				this.getResourceDetailsEntity() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
 						: this.getResourceDetailsEntity().getId());
 

@@ -101,8 +101,8 @@ public class ResourceDetailsEntity extends BaseEntity {
 		
 		List<SpecialisationEntity> specialisationEntityList = new ArrayList<>();
 		if (resourceDetails.getSpecialisationList() != null) {
-			for (Specialisation special : resourceDetails.getSpecialisationList()) {
-				specialisationEntityList.add(new SpecialisationEntity(this, special));
+			for (Specialisation specialisation : resourceDetails.getSpecialisationList()) {
+				specialisationEntityList.add(new SpecialisationEntity(this, specialisation));
 			}
 		}
 		this.specialisationEntyList = specialisationEntityList;
