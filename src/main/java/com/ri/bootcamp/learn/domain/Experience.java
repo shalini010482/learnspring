@@ -20,14 +20,20 @@ public class Experience extends BaseDomain {
 	@NotEmpty
 	private String orgName;
 	private String orgAddress;
-
+	private String noOfYears;	
+	private String dateOfJoining;
+	private String dateOfResigning;
+	private String reasonForResignation;
 	@NotEmpty
 	private String resourceDetailsId;
 
-	public Experience(String id, int active, String orgName, String orgAddress, String resourceDetailsId) {
+	public Experience(String id, int active, String orgName, String orgAddress,String noOfYears,String dateOfJoining,String dateOfResigning,String reasonForResignation, String resourceDetailsId) {
 		super(id, active);
 		this.orgName = orgName;
 		this.orgAddress = orgAddress;
-		this.resourceDetailsId = resourceDetailsId;
+		this.noOfYears = noOfYears;		
+		this.dateOfJoining = dateOfJoining;
+		this.dateOfResigning = dateOfResigning;
+		this.reasonForResignation = reasonForResignation;
 	}
 }

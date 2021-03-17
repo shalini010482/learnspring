@@ -1,7 +1,11 @@
 package com.ri.bootcamp.learn.dao;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -34,13 +38,22 @@ public class SpecialisationEntity extends BaseEntity {
 	@Size(max = 1024)
 	@Column(name = "specialisation_description")
 	private String specialisationDescription;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "resource", unique = true, referencedColumnName = "id")
+	private ResourceDetailsEntity resourceDetailsEntity;
 
-	public SpecialisationEntity(Specialisation specialisation) {
+	public SpecialisationEntity(ResourceDetailsEntity resourceDetailsEntity,Specialisation specialisation) {
 		super();
 		this.id = specialisation.getId();
 		this.active = specialisation.getActive();
 		this.specialisationName = specialisation.getSpecialisationName();
 		this.specialisationDescription = specialisation.getSpecialisationDescription();
+		
+		if (specialisation.getResourceDetailsId() != null) {
+			resourceDetailsEntity.setId(specialisation.getResourceDetailsId());
+			this.setResourceDetailsEntity(resourceDetailsEntity);
+		}
 	}
 
 	public Specialisation getSpecialisationDomain() {

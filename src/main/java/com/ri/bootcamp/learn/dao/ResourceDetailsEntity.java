@@ -15,6 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.ri.bootcamp.learn.domain.Experience;
 import com.ri.bootcamp.learn.domain.ResourceDetails;
+import com.ri.bootcamp.learn.domain.Specialisation;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -72,6 +73,9 @@ public class ResourceDetailsEntity extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.ALL)
 	private List<ExperienceEntity> experienceEntyList = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.ALL)
+	private List<SpecialisationEntity> specialisationEntyList = new ArrayList<>();
 
 	public ResourceDetailsEntity(ResourceDetails resourceDetails) {
 		super();
@@ -86,14 +90,22 @@ public class ResourceDetailsEntity extends BaseEntity {
 		this.postApplierFor = resourceDetails.getPostApplierFor();
 		this.skillIdList = resourceDetails.getSkillIdList();
 
-		List<ExperienceEntity> expEntityList = new ArrayList<>();
+		List<ExperienceEntity> expEntityList = new ArrayList<>();		
 
 		if (resourceDetails.getExperienceSet() != null) {
 			for (Experience exp : resourceDetails.getExperienceSet()) {
 				expEntityList.add(new ExperienceEntity(this, exp));
 			}
 		}
-		this.experienceEntyList = expEntityList;
+		this.experienceEntyList = expEntityList;	
+		
+		List<SpecialisationEntity> specialisationEntityList = new ArrayList<>();
+		if (resourceDetails.getSpecialisationList() != null) {
+			for (Specialisation special : resourceDetails.getSpecialisationList()) {
+				specialisationEntityList.add(new SpecialisationEntity(this, special));
+			}
+		}
+		this.specialisationEntyList = specialisationEntityList;
 	}
 
 	public ResourceDetails getResourceDetailsDomain() {
@@ -104,6 +116,13 @@ public class ResourceDetailsEntity extends BaseEntity {
 		for (ExperienceEntity experienceEntity : experienceEntyList) {
 			experienceList.add(experienceEntity.getExperienceDomain());
 		}
+		
+		List<Specialisation> specialisationList = new ArrayList<>();
+		List<SpecialisationEntity> specialisationEntyList = this.getSpecialisationEntyList();
+
+		for (SpecialisationEntity specialisationEntity : specialisationEntyList) {
+			specialisationList.add(specialisationEntity.getSpecialisationDomain());
+		}
 
 		ResourceDetails resourceDetails = new ResourceDetails(this.getName() == null ? "-" : this.getName(),
 				this.getGender() == null ? "-" : this.getGender(), this.getCaste() == null ? "-" : this.getCaste(),
@@ -111,7 +130,8 @@ public class ResourceDetailsEntity extends BaseEntity {
 				this.getMaritalStatus() == null ? "-" : this.getMaritalStatus(),
 				this.getQualification() == null ? "-" : this.getQualification(),
 				this.getMotherTongue() == null ? "-" : this.getMotherTongue(),
-				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null, experienceList);
+				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(),
+						null, experienceList,specialisationList);
 
 		return resourceDetails;
 	}

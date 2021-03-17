@@ -39,6 +39,20 @@ public class ExperienceEntity extends BaseEntity {
 	@Column(name = "org_address")
 	private String orgAddress;
 
+	@Size(max = 50)
+	@Column(name = "no_of_years")
+	private String noOfYears;
+
+	@Column(name = "date_of_joining")
+	private String dateOfJoining;
+
+	@Column(name = "date_of_resigning")
+	private String dateOfResigning;
+
+	@Size(max = 1024)
+	@Column(name = "reason_for_resignation")
+	private String reasonForResignation;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "resource", unique = true, referencedColumnName = "id")
 	private ResourceDetailsEntity resourceDetailsEntity;
@@ -50,7 +64,10 @@ public class ExperienceEntity extends BaseEntity {
 		this.active = experience.getActive();
 		this.orgName = experience.getOrgName();
 		this.orgAddress = experience.getOrgAddress();
-		this.resourceDetailsEntity = resourceDetailsEntity;
+		this.noOfYears = experience.getNoOfYears();
+		this.dateOfJoining = experience.getDateOfJoining();
+		this.dateOfResigning = experience.getDateOfResigning();
+		this.reasonForResignation = experience.getReasonForResignation();
 
 		if (experience.getResourceDetailsId() != null) {
 			resourceDetailsEntity.setId(experience.getResourceDetailsId());
@@ -63,6 +80,11 @@ public class ExperienceEntity extends BaseEntity {
 		Experience experience = new Experience(this.getId() == null ? "-" : this.getId(), this.getActive(),
 				this.getOrgName() == null ? "-" : this.getOrgName(),
 				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),
+				this.getNoOfYears() == null ? "-" : this.getNoOfYears(),
+
+				this.getDateOfJoining() == null ? "-" : this.getDateOfJoining(),
+				this.getDateOfResigning() == null ? "-" : this.getDateOfResigning(),
+				this.getReasonForResignation() == null ? "-" : this.getReasonForResignation(),
 				this.getResourceDetailsEntity() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
 						: this.getResourceDetailsEntity().getId());
 
