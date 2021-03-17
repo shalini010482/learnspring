@@ -1,6 +1,5 @@
 package com.ri.bootcamp.learn.dao;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-
+import javax.persistence.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.ri.bootcamp.learn.domain.Experience;
@@ -39,20 +38,21 @@ public class ExperienceEntity extends BaseEntity {
 	@Size(max = 1024)
 	@Column(name = "org_address")
 	private String orgAddress;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "resource", unique = true, referencedColumnName = "id")
 	private ResourceDetailsEntity resourceDetailsEntity;
 
-	public ExperienceEntity(Experience experience) {
+	public ExperienceEntity(ResourceDetailsEntity resourceDetailsEntity, Experience experience) {
 		super();
+
 		this.id = experience.getId();
 		this.active = experience.getActive();
 		this.orgName = experience.getOrgName();
 		this.orgAddress = experience.getOrgAddress();
+		this.resourceDetailsEntity = resourceDetailsEntity;
 
 		if (experience.getResourceDetailsId() != null) {
-			ResourceDetailsEntity resourceDetailsEntity = new ResourceDetailsEntity();
 			resourceDetailsEntity.setId(experience.getResourceDetailsId());
 			this.setResourceDetailsEntity(resourceDetailsEntity);
 		}
@@ -64,7 +64,7 @@ public class ExperienceEntity extends BaseEntity {
 				this.getOrgName() == null ? "-" : this.getOrgName(),
 				this.getOrgAddress() == null ? "-" : this.getOrgAddress(),
 				this.getResourceDetailsEntity() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
-						: this.getResourceDetailsEntity().getName());
+						: this.getResourceDetailsEntity().getId());
 
 		return experience;
 	}

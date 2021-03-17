@@ -1,8 +1,7 @@
 package com.ri.bootcamp.learn.domain;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,8 +16,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResourceDetails extends BaseDomain {
-
-	//private static final long serialVersionUID = 1L;
 	private String name;
 	private String gender;
 	private String caste;
@@ -38,5 +35,4 @@ public class ResourceDetails extends BaseDomain {
 		}
 		return skillIds.toString();
 	}
-
 }

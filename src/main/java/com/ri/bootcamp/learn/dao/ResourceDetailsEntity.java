@@ -1,16 +1,13 @@
 package com.ri.bootcamp.learn.dao;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -36,29 +33,6 @@ import lombok.ToString;
 @DynamicUpdate
 @ToString
 public class ResourceDetailsEntity extends BaseEntity {
-
-	public ResourceDetailsEntity(ResourceDetails resourceDetails) {
-		super();
-		this.active = resourceDetails.getActive();
-		this.name = resourceDetails.getName();
-		this.gender = resourceDetails.getGender();
-		this.caste = resourceDetails.getCaste();
-		this.religion = resourceDetails.getReligion();
-		this.maritalStatus = resourceDetails.getMaritalStatus();
-		this.qualification = resourceDetails.getQualification();
-		this.motherTongue = resourceDetails.getMotherTongue();
-		this.postApplierFor = resourceDetails.getPostApplierFor();
-		this.skillIdList = resourceDetails.getSkillIdList();
-
-		Set<ExperienceEntity> expEntitySet = new HashSet<>();
-
-		if (resourceDetails.getExperienceSet() != null) {
-		for (Experience exp : resourceDetails.getExperienceSet()) {
-			expEntitySet.add(new ExperienceEntity(exp));
-			}
-		}
-		this.experienceEntySet = expEntitySet;
-	}
 
 	@Size(max = 150)
 	@Column(name = "name")
@@ -95,18 +69,40 @@ public class ResourceDetailsEntity extends BaseEntity {
 	@Size(max = 1024)
 	@Column(name = "skill_id_list")
 	private String skillIdList;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.MERGE)
-	@OrderBy("name ASC")
-	private Set<ExperienceEntity> experienceEntySet = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.ALL)
+	private List<ExperienceEntity> experienceEntyList = new ArrayList<>();
+
+	public ResourceDetailsEntity(ResourceDetails resourceDetails) {
+		super();
+		this.active = resourceDetails.getActive();
+		this.name = resourceDetails.getName();
+		this.gender = resourceDetails.getGender();
+		this.caste = resourceDetails.getCaste();
+		this.religion = resourceDetails.getReligion();
+		this.maritalStatus = resourceDetails.getMaritalStatus();
+		this.qualification = resourceDetails.getQualification();
+		this.motherTongue = resourceDetails.getMotherTongue();
+		this.postApplierFor = resourceDetails.getPostApplierFor();
+		this.skillIdList = resourceDetails.getSkillIdList();
+
+		List<ExperienceEntity> expEntityList = new ArrayList<>();
+
+		if (resourceDetails.getExperienceSet() != null) {
+			for (Experience exp : resourceDetails.getExperienceSet()) {
+				expEntityList.add(new ExperienceEntity(this, exp));
+			}
+		}
+		this.experienceEntyList = expEntityList;
+	}
 
 	public ResourceDetails getResourceDetailsDomain() {
 
-		List<Experience> experienceSet = new ArrayList<>();
-		Set<ExperienceEntity> experienceEntySet = this.getExperienceEntySet();
+		List<Experience> experienceList = new ArrayList<>();
+		List<ExperienceEntity> experienceEntyList = this.getExperienceEntyList();
 
-		for (ExperienceEntity experienceEntity : experienceEntySet) {
-			experienceSet.add(experienceEntity.getExperienceDomain());
+		for (ExperienceEntity experienceEntity : experienceEntyList) {
+			experienceList.add(experienceEntity.getExperienceDomain());
 		}
 
 		ResourceDetails resourceDetails = new ResourceDetails(this.getName() == null ? "-" : this.getName(),
@@ -115,7 +111,9 @@ public class ResourceDetailsEntity extends BaseEntity {
 				this.getMaritalStatus() == null ? "-" : this.getMaritalStatus(),
 				this.getQualification() == null ? "-" : this.getQualification(),
 				this.getMotherTongue() == null ? "-" : this.getMotherTongue(),
-				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null, experienceSet);
+				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null, experienceList);
+
 		return resourceDetails;
 	}
+
 }

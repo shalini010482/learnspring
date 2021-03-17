@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -87,7 +88,7 @@ public class CorporateAddressEntity extends BaseEntity {
     @Column(name = "longtitude")
     private double longtitude;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "store_details", unique = true, referencedColumnName = "id")
     private CorporateDetailsEntity corporateDetailsEntity;
 

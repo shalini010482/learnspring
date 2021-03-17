@@ -15,12 +15,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
 public class Experience extends BaseDomain {
+
 	@NotEmpty
 	private String orgName;
 	private String orgAddress;
-	
+
 	@NotEmpty
 	private String resourceDetailsId;
 
@@ -28,6 +28,6 @@ public class Experience extends BaseDomain {
 		super(id, active);
 		this.orgName = orgName;
 		this.orgAddress = orgAddress;
-		this.resourceDetailsId=resourceDetailsId;
+		this.resourceDetailsId = resourceDetailsId;
 	}
 }
