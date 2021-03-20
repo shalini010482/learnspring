@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.ri.bootcamp.learn.dao.ResourceDetailsEntity;
 import com.ri.bootcamp.learn.domain.MetaSkill;
 import com.ri.bootcamp.learn.domain.ResourceDetails;
+import com.ri.bootcamp.learn.exception.ClassMismatchException;
 import com.ri.bootcamp.learn.metaskill.MetaSkillService;
+import com.ri.bootcamp.learn.utility.BeanMapperUtil;
 
 @Service
 public class ResourceDetailsService {
@@ -20,6 +22,9 @@ public class ResourceDetailsService {
 
 	@Autowired
 	MetaSkillService metaSkillService;
+	
+	 @Autowired
+	 BeanMapperUtil<ResourceDetails> beanMapperUtil;
 
 	public ResourceDetails create(ResourceDetails resourceDetailsIn) {
 		ResourceDetailsEntity resourceDetailsEntityIn = new ResourceDetailsEntity(resourceDetailsIn);// domain-->DAO
@@ -67,5 +72,22 @@ public class ResourceDetailsService {
 		return resourcedetailsLst;
 
 	}
+	
+	public void deleteById(String id) {
+		resourceDetailsRepository.deleteById(id);
+    }
+	
+	   public ResourceDetails update(ResourceDetails resourceDetailsIn) throws ClassMismatchException {
+	        Optional<ResourceDetailsEntity> optresourceDetailsEntityIn = resourceDetailsRepository.findById(resourceDetailsIn.getId());
+	        ResourceDetails resourceDetails = null;
+	        if (optresourceDetailsEntityIn.isPresent()) {
+	        	ResourceDetails resourceDetailsDBObj = optresourceDetailsEntityIn.get().getResourceDetailsDomain();
+	            beanMapperUtil.copyNonNullProperties(resourceDetailsDBObj, resourceDetailsIn);
+	            ResourceDetailsEntity resourceDetailsSaveEntity = new ResourceDetailsEntity(resourceDetailsDBObj);
+	            ResourceDetailsEntity resourceDetailsEntityOut = resourceDetailsRepository.save(resourceDetailsSaveEntity);
+	            resourceDetails = resourceDetailsEntityOut.getResourceDetailsDomain();
+	        }
+	        return resourceDetails;
+	    }
 
 }

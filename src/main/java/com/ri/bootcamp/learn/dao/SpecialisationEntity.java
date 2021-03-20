@@ -1,11 +1,16 @@
 package com.ri.bootcamp.learn.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -39,9 +44,9 @@ public class SpecialisationEntity extends BaseEntity {
 	@Column(name = "specialisation_description")
 	private String specialisationDescription;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "resource", unique = true, referencedColumnName = "id")
-	private ResourceDetailsEntity resourceDetailsEntity;
+	private List<ResourceDetailsEntity> resourceDetailsEntitySet = new ArrayList<>();
 
 	public SpecialisationEntity(ResourceDetailsEntity resourceDetailsEntity,Specialisation specialisation) {
 		super();
@@ -52,7 +57,7 @@ public class SpecialisationEntity extends BaseEntity {
 		
 		if (specialisation.getResourceDetailsId() != null) {
 			resourceDetailsEntity.setId(specialisation.getResourceDetailsId());
-			this.setResourceDetailsEntity(resourceDetailsEntity);
+			this.resourceDetailsEntitySet.add(resourceDetailsEntity);
 		}
 	}
 

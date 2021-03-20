@@ -7,6 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -74,9 +77,13 @@ public class ResourceDetailsEntity extends BaseEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.ALL)
 	private List<ExperienceEntity> experienceEntyList = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(
+			  name = "resource_specialisation", 
+			  joinColumns = @JoinColumn(name = "resource_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "specialisation_id"))
 	private List<SpecialisationEntity> specialisationEntyList = new ArrayList<>();
-
+	
 	public ResourceDetailsEntity(ResourceDetails resourceDetails) {
 		super();
 		this.active = resourceDetails.getActive();
