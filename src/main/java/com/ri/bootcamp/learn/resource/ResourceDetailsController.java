@@ -59,11 +59,6 @@ public class ResourceDetailsController {
     @ResponseStatus(value = HttpStatus.OK)
     public ResourceDetails update(@RequestBody ResourceDetails resourceDetailsIn) throws Exception {
 		ResourceDetails resourceDetailsOut = resourceDetailsService.update(resourceDetailsIn);
-//        if (resourceDetailsOut == null) {
-//            LOGGER.debug(StringConstantsUtil.UPDATION_FAILED_FOR + resourceDetailsIn.getId());
-//            throw new CustomGenericException(StringConstantsUtil.RESPONSE_CODE_417, StringConstantsUtil.UPDATION_FAILED,
-//                    StringConstantsUtil.UPDATION_FAILED_FOR + resourceDetailsIn.getId());
-//        }
         return resourceDetailsOut;
     }
 }

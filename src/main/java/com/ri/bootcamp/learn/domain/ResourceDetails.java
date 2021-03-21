@@ -26,16 +26,16 @@ public class ResourceDetails extends BaseDomain {
 	private String postApplierFor;
 
 	private List<MetaSkill> skillSet;
-	private List<Experience> experienceSet;	
+	private List<Experience> experienceSet;
 	private List<Specialisation> specialisationList;
-	
+
 	public String getSkillIdList() {
 		StringBuilder skillIds = new StringBuilder();
-		for (MetaSkill s : skillSet) {
-			skillIds.append(s.getId()).append(",");
+		if (this.skillSet != null) {
+			for (MetaSkill s : skillSet) {
+				skillIds.append(s.getId()).append(",");
+			}
 		}
 		return skillIds.toString();
 	}
-	
-	
 }

@@ -1,8 +1,10 @@
 package com.ri.bootcamp.learn.resource;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,9 @@ public class ResourceDetailsService {
 
 	@Autowired
 	MetaSkillService metaSkillService;
-	
-	 @Autowired
-	 BeanMapperUtil<ResourceDetails> beanMapperUtil;
+
+	@Autowired
+	BeanMapperUtil<ResourceDetails> beanMapperUtil;
 
 	public ResourceDetails create(ResourceDetails resourceDetailsIn) {
 		ResourceDetailsEntity resourceDetailsEntityIn = new ResourceDetailsEntity(resourceDetailsIn);// domain-->DAO
@@ -35,11 +37,11 @@ public class ResourceDetailsService {
 	}
 
 	public ResourceDetails getById(String id) {
-		Optional<ResourceDetailsEntity> resourceDetailsIn = resourceDetailsRepository.findById(id);
+		Optional<ResourceDetailsEntity> optResourceDetailsEntyOut = resourceDetailsRepository.findById(id);
 		ResourceDetails resourceDetailsOut = null;
-		if (resourceDetailsIn.isPresent()) {
-			ResourceDetailsEntity rscDetailEntity = resourceDetailsIn.get();
-			resourceDetailsOut = resourceDetailsIn.get().getResourceDetailsDomain();
+		if (optResourceDetailsEntyOut.isPresent()) {
+			ResourceDetailsEntity rscDetailEntity = optResourceDetailsEntyOut.get();
+			resourceDetailsOut = optResourceDetailsEntyOut.get().getResourceDetailsDomain();
 			resourceDetailsOut.setSkillSet(getMetaSkillSet(rscDetailEntity.getSkillIdList()));
 		}
 		return resourceDetailsOut;
@@ -53,41 +55,42 @@ public class ResourceDetailsService {
 		}
 		return skillSet;
 	}
-	
+
 	public List<ResourceDetails> getResourcesBySkill(String skill_ids) {
 		String[] skillIdArr = skill_ids.split(",");
 		List<ResourceDetails> resourcedetailsLst = new ArrayList<>();
-		List<ResourceDetailsEntity> resourceDetailEntityList = new ArrayList<>();
+		Set<ResourceDetailsEntity> resourceDetailEntitySet = new HashSet<>();
 		for (String skillId : skillIdArr) {
-			List<ResourceDetailsEntity> tempList = resourceDetailsRepository.findBySkillIdListContains(skillId);
-			resourceDetailEntityList.addAll(tempList);		
-		}	
-		
+			Set<ResourceDetailsEntity> resourceDetailsEntySet = resourceDetailsRepository.findBySkillIdListContains(skillId);
+			resourceDetailEntitySet.addAll(resourceDetailsEntySet);
+		}
+
 		ResourceDetails resourceDtlsOut = null;
-		for(ResourceDetailsEntity resourceDetailsEntity : resourceDetailEntityList) {			
-			resourceDtlsOut=resourceDetailsEntity.getResourceDetailsDomain();
+		for (ResourceDetailsEntity resourceDetailsEntity : resourceDetailEntitySet) {
+			resourceDtlsOut = resourceDetailsEntity.getResourceDetailsDomain();
 			resourceDtlsOut.setSkillSet(getMetaSkillSet(resourceDetailsEntity.getSkillIdList()));
 			resourcedetailsLst.add(resourceDtlsOut);
 		}
 		return resourcedetailsLst;
 
 	}
-	
+
 	public void deleteById(String id) {
 		resourceDetailsRepository.deleteById(id);
-    }
-	
-	   public ResourceDetails update(ResourceDetails resourceDetailsIn) throws ClassMismatchException {
-	        Optional<ResourceDetailsEntity> optresourceDetailsEntityIn = resourceDetailsRepository.findById(resourceDetailsIn.getId());
-	        ResourceDetails resourceDetails = null;
-	        if (optresourceDetailsEntityIn.isPresent()) {
-	        	ResourceDetails resourceDetailsDBObj = optresourceDetailsEntityIn.get().getResourceDetailsDomain();
-	            beanMapperUtil.copyNonNullProperties(resourceDetailsDBObj, resourceDetailsIn);
-	            ResourceDetailsEntity resourceDetailsSaveEntity = new ResourceDetailsEntity(resourceDetailsDBObj);
-	            ResourceDetailsEntity resourceDetailsEntityOut = resourceDetailsRepository.save(resourceDetailsSaveEntity);
-	            resourceDetails = resourceDetailsEntityOut.getResourceDetailsDomain();
-	        }
-	        return resourceDetails;
-	    }
+	}
+
+	public ResourceDetails update(ResourceDetails resourceDetailsIn) throws ClassMismatchException {
+		Optional<ResourceDetailsEntity> optResourceDetailsEntityOut = resourceDetailsRepository
+				.findById(resourceDetailsIn.getId());
+		ResourceDetails resourceDetails = null;
+		if (optResourceDetailsEntityOut.isPresent()) {
+			ResourceDetails resourceDetailsDBObj = optResourceDetailsEntityOut.get().getResourceDetailsDomain();
+			beanMapperUtil.copyNonNullProperties(resourceDetailsDBObj, resourceDetailsIn);
+			ResourceDetailsEntity resourceDetailsSaveEntity = new ResourceDetailsEntity(resourceDetailsDBObj);
+			ResourceDetailsEntity resourceDetailsEntityOut = resourceDetailsRepository.save(resourceDetailsSaveEntity);
+			resourceDetails = resourceDetailsEntityOut.getResourceDetailsDomain();
+		}
+		return resourceDetails;
+	}
 
 }

@@ -76,16 +76,14 @@ public class ResourceDetailsEntity extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceDetailsEntity", cascade = CascadeType.ALL)
 	private List<ExperienceEntity> experienceEntyList = new ArrayList<>();
-	
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(
-			  name = "resource_specialisation", 
-			  joinColumns = @JoinColumn(name = "resource_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "specialisation_id"))
+	@JoinTable(name = "resource_specialisation", joinColumns = @JoinColumn(name = "resource_id"), inverseJoinColumns = @JoinColumn(name = "specialisation_id"))
 	private List<SpecialisationEntity> specialisationEntyList = new ArrayList<>();
-	
+
 	public ResourceDetailsEntity(ResourceDetails resourceDetails) {
 		super();
+		this.id = resourceDetails.getId();
 		this.active = resourceDetails.getActive();
 		this.name = resourceDetails.getName();
 		this.gender = resourceDetails.getGender();
@@ -97,15 +95,15 @@ public class ResourceDetailsEntity extends BaseEntity {
 		this.postApplierFor = resourceDetails.getPostApplierFor();
 		this.skillIdList = resourceDetails.getSkillIdList();
 
-		List<ExperienceEntity> expEntityList = new ArrayList<>();		
+		List<ExperienceEntity> expEntityList = new ArrayList<>();
 
 		if (resourceDetails.getExperienceSet() != null) {
 			for (Experience exp : resourceDetails.getExperienceSet()) {
 				expEntityList.add(new ExperienceEntity(this, exp));
 			}
 		}
-		this.experienceEntyList = expEntityList;	
-		
+		this.experienceEntyList = expEntityList;
+
 		List<SpecialisationEntity> specialisationEntityList = new ArrayList<>();
 		if (resourceDetails.getSpecialisationList() != null) {
 			for (Specialisation specialisation : resourceDetails.getSpecialisationList()) {
@@ -123,7 +121,7 @@ public class ResourceDetailsEntity extends BaseEntity {
 		for (ExperienceEntity experienceEntity : experienceEntyList) {
 			experienceList.add(experienceEntity.getExperienceDomain());
 		}
-		
+
 		List<Specialisation> specialisationList = new ArrayList<>();
 		List<SpecialisationEntity> specialisationEntyList = this.getSpecialisationEntyList();
 
@@ -137,8 +135,8 @@ public class ResourceDetailsEntity extends BaseEntity {
 				this.getMaritalStatus() == null ? "-" : this.getMaritalStatus(),
 				this.getQualification() == null ? "-" : this.getQualification(),
 				this.getMotherTongue() == null ? "-" : this.getMotherTongue(),
-				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(),
-						null, experienceList,specialisationList);
+				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null, experienceList,
+				specialisationList);
 
 		return resourceDetails;
 	}

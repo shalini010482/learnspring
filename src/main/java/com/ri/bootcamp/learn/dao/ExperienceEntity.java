@@ -72,8 +72,7 @@ public class ExperienceEntity extends BaseEntity {
 		this.dateOfResigning = experience.getDateOfResigning();
 		this.reasonForResignation = experience.getReasonForResignation();
 
-		if (experience.getResourceDetailsId() != null) {
-			resourceDetailsEntity.setId(experience.getResourceDetailsId());
+		if (resourceDetailsEntity != null) {
 			this.setResourceDetailsEntity(resourceDetailsEntity);
 		}
 	}
