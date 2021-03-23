@@ -1,9 +1,7 @@
 package com.ri.bootcamp.learn.dao;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-
+import com.ri.bootcamp.learn.utility.StringConstantsUtil;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.ri.bootcamp.learn.domain.Specialisation;
@@ -60,12 +58,12 @@ public class SpecialisationEntity extends BaseEntity {
 			this.resourceDetailsEntitySet.add(resourceDetailsEntity);
 		}
 	}
-
+	
 	public Specialisation getSpecialisationDomain() {
 		Specialisation specialisation = new Specialisation(
-				this.getId() == null ? "-" : this.getId(), this.getActive(),
-				this.getSpecialisationName() == null ? "-" : this.getSpecialisationName(),
-				this.getSpecialisationDescription() == null ? "-" : this.getSpecialisationDescription());
+				this.getId() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getId(), this.getActive(),
+				this.getSpecialisationName() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getSpecialisationName(),
+				this.getSpecialisationDescription() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getSpecialisationDescription());
 
 		return specialisation;
 	}

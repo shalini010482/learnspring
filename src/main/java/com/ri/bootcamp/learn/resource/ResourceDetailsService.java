@@ -29,7 +29,7 @@ public class ResourceDetailsService {
 	BeanMapperUtil<ResourceDetails> beanMapperUtil;
 
 	public ResourceDetails create(ResourceDetails resourceDetailsIn) {
-		ResourceDetailsEntity resourceDetailsEntityIn = new ResourceDetailsEntity(resourceDetailsIn);// domain-->DAO
+		ResourceDetailsEntity resourceDetailsEntityIn = new ResourceDetailsEntity(resourceDetailsIn);
 		ResourceDetailsEntity resourceDetailsEntityOut = resourceDetailsRepository.save(resourceDetailsEntityIn);
 		ResourceDetails resourceDetailsOut = resourceDetailsEntityOut.getResourceDetailsDomain();
 		resourceDetailsOut.setSkillSet(getMetaSkillSet(resourceDetailsEntityOut.getSkillIdList()));

@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.ri.bootcamp.learn.domain.MetaSkill;
+import com.ri.bootcamp.learn.utility.StringConstantsUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,7 @@ public class MetaSkillEntity extends BaseEntity {
 
 	@Size(max = 1024)
 	@Column(name = "skill_description")
-	private String skillDescription;		
+	private String skillDescription;
 
 	public MetaSkillEntity(MetaSkill metaSkill) {
 		super();
@@ -46,9 +47,10 @@ public class MetaSkillEntity extends BaseEntity {
 	public MetaSkill getMetaSkillDomain() {
 
 		MetaSkill metaSkill = new MetaSkill(
-				this.getId() == null ? "-" : this.getId(), this.getActive(),
-				this.getSkillName() == null ? "-" : this.getSkillName(),
-				this.getSkillDescription() == null ? "-" : this.getSkillDescription());
+				this.getId() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getId(), this.getActive(),
+				this.getSkillName() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getSkillName(),
+				this.getSkillDescription() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
+						: this.getSkillDescription());
 
 		return metaSkill;
 	}

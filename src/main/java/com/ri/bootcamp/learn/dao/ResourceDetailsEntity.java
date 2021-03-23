@@ -19,6 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.ri.bootcamp.learn.domain.Experience;
 import com.ri.bootcamp.learn.domain.ResourceDetails;
 import com.ri.bootcamp.learn.domain.Specialisation;
+import com.ri.bootcamp.learn.utility.StringConstantsUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -129,14 +130,17 @@ public class ResourceDetailsEntity extends BaseEntity {
 			specialisationList.add(specialisationEntity.getSpecialisationDomain());
 		}
 
-		ResourceDetails resourceDetails = new ResourceDetails(this.getName() == null ? "-" : this.getName(),
-				this.getGender() == null ? "-" : this.getGender(), this.getCaste() == null ? "-" : this.getCaste(),
-				this.getReligion() == null ? "-" : this.getReligion(),
-				this.getMaritalStatus() == null ? "-" : this.getMaritalStatus(),
-				this.getQualification() == null ? "-" : this.getQualification(),
-				this.getMotherTongue() == null ? "-" : this.getMotherTongue(),
-				this.getPostApplierFor() == null ? "-" : this.getPostApplierFor(), null, experienceList,
-				specialisationList);
+		ResourceDetails resourceDetails = new ResourceDetails(
+				this.getName() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getName(),
+				this.getGender() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getGender(),
+				this.getCaste() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getCaste(),
+				this.getReligion() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getReligion(),
+				this.getMaritalStatus() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getMaritalStatus(),
+				this.getQualification() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getQualification(),
+				this.getMotherTongue() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER : this.getMotherTongue(),
+				this.getPostApplierFor() == null ? StringConstantsUtil.EMPTY_DATA_PLACEHOLDER
+						: this.getPostApplierFor(),
+				null, experienceList, specialisationList);
 
 		return resourceDetails;
 	}
